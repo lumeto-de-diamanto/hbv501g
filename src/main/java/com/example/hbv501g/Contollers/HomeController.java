@@ -1,5 +1,7 @@
 package com.example.hbv501g.Contollers;
+import com.example.hbv501g.Persistence.Entities.Forum;
 import com.example.hbv501g.Persistence.Entities.Post;
+import com.example.hbv501g.Services.ForumService;
 import com.example.hbv501g.Services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,40 +14,51 @@ import java.util.List;
 
 @Controller
 public class HomeController {
+
+    private ForumService forumService;
     private PostService postService;
 
     @Autowired
-    public HomeController(PostService postService){
+    public HomeController(ForumService forumService, PostService postService){
+        this.forumService = forumService;
         this.postService = postService;
     }
 
     @RequestMapping("/")
     public String homePage(Model model){
         //call a method in a Service Class
-        List<Post> allPosts = postService.findAll();
+        List<Forum> allForums = forumService.findAll();
         //Add some data to the Model
-        model.addAttribute("posts", allPosts);
+        model.addAttribute("forum", allForums);
         return "home";
     }
 
-    @RequestMapping(value = "/addpost", method = RequestMethod.GET)
-    public String addPageForm(Post post){
-        return "newPost";
-    }
+    @RequestMapping(value = "/addforum", method = RequestMethod.GET)
+    public String addForumForm(Forum forum){return "newForum";}
 
-    @RequestMapping(value = "/addpost", method = RequestMethod.POST)
-    public String addPost(Post post, BindingResult result, Model model){
-        if(result.hasErrors()){
-            return "newPost";
+    @RequestMapping(value = "/addforum", method = RequestMethod.POST)
+    public String addForum(Forum forum, BindingResult result, Model model){
+        if (result.hasErrors()){
+            return "newForum";
         }
-        postService.save(post);
+        forumService.save(forum);
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/delete/{postId}", method = RequestMethod.GET)
-    public String deletePost(@PathVariable("postId") long id, Model model){
-        Post postToDelete = postService.findById(id);
-        postService.delete(postToDelete);
+    @RequestMapping(value = "/delete/{forumId}", method = RequestMethod.GET)
+    public String deleteForum(@PathVariable("forumId") long id, Model model){
+        Forum forumToDelete = forumService.findById(id);
+        forumService.delete(forumToDelete);
         return "redirect:/";
     }
+
+    @RequestMapping(value = "/{forumId}", method = RequestMethod.GET)
+    public String intoForum(long forumId, Model model){
+        Forum forum = forumService.findById(forumId);
+        List<Post> posts = postService.findAllByForumId(forumId);
+
+        model.addAttribute("forum", forum);
+        model.addAttribute("posts", posts);
+        //model.addAttribute("newPosts", new Post());
+        return "forum";}
 }

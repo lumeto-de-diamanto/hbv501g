@@ -2,29 +2,27 @@
 <html xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Posts</title>
+    <title>Forums</title>
 </head>
 <body>
 
-<div th:switch="${posts}">
-    <h2 th:case="null">No Posts yet!</h2>
+<div th:switch="${forum}">
+    <h2 th:case="null">No Forums yet!</h2>
     <div th:case="*">
-        <h2>Posts</h2>
+        <h2>Forums</h2>
         <table>
             <thead>
             <tr>
-                <th>Tag</th>
-                <th>Title</th>
-                <th>Content</th>
-                <th>Delete</th>
+                <th>Name</th>
+                <th>Description</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="post : ${posts}">
-                <td th:text="${post.tag}"></td>
-                <td th:text="${post.title}"></td>
-                <td th:text="${post.content}"></td>
-                <td><a th:href="@{/delete/{postId}(postId=${post.post_id})}">Delete</a></td>
+            <tr th:each="forum : ${forum}">
+                <td th:text="${forum.name}"></td>
+                <td th:text="${forum.description}"></td>
+                <td><a th:href="@{/forum/{forumId}(forumId=${forum.forum_id})}">View Forum</a></td>
+                <td><a th:href="@{/delete/{forumId}(forumId=${forum.forum_id})}">Delete</a></td>
 
             </tr>
             </tbody>
@@ -33,6 +31,7 @@
     <p><a href="/addpost">Add a new post</a></p>
     <p><a href="/signup">Signup</a></p>
     <p><a href="/login">Login</a></p>
+    <p><a href="/addforum">Create Forum</a></p>
 </div>
 </body>
 </html>

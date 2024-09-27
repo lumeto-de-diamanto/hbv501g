@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="'Forum: ' + ${forum.name}">Forum Details</title>
+</head>
+<body>
+
+<h1 th:text="'Forum: ' + ${forum.name}">Forum Name</h1>
+<p th:text="${forum.description}">Forum Description</p>
+
+<h2>Posts in this Forum</h2>
+<div th:switch="{posts}">
+  <h2 th:case="null">No Posts yet!</h2>
+  <div th:case="*">
+    <h2>Forums</h2>
+<table>
+  <thead>
+  <tr>
+    <th>Post Title</th>
+    <th>Content</th>
+    <th>Posted By</th>
+    <th>Date</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="post : ${posts}">
+    <td th:text="${post.title}">Post Title</td>
+    <td th:text="${post.content}">Post Content</td>
+    <td th:text="${post.user}">Author</td>
+    <td th:text="${#dates.format(post.timestamp, 'yyyy-MM-dd HH:mm')}">Date</td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+  <p><a href="/addpost">Add a new post</a></p>
+</div>
+
+<h2>Create a New Post</h2>
+<form th:action="@{/forum/{forumId}/addPost(forumId=${forum.forum_id})}" th:object="${newPost}" method="post">
+  <label for="title">Title</label>
+  <input type="text" th:field="*{title}" id="title" placeholder="Post Title">
+  <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+
+  <label for="content">Content</label>
+  <textarea th:field="*{content}" id="content" placeholder="Post Content"></textarea>
+  <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></span>
+
+  <label for="user">user</label>
+  <input type="text" th:field="*{user}" id="user" placeholder="Your Name">
+  <span th:if="${#fields.hasErrors('user')}" th:errors="*{user}"></span>
+
+  <input type="submit" value="Create Post">
+</form>
+
+</body>
+</html>

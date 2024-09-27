@@ -29,6 +29,11 @@ public class PostServiceImplementation implements PostService {
     }
 
     @Override
+    public List<Post> findAllByForumId(long forumId) {
+        return postRepository.findAllByForumId(forumId);
+    }
+
+    @Override
     public List<Post> findAll() {
         return postRepository.findAll();
     }
