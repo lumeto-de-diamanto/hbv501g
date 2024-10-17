@@ -1,6 +1,7 @@
 package com.example.hbv501g.Contollers;
 
 import java.util.List;
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -109,6 +110,7 @@ public class HomeController {
         System.out.println("forumId = " + forumId);
         Forum forum = forumService.findById(forumId);
         List<Post> forumPosts = postService.getPostByForum(forum);
+        Collections.sort(forumPosts, new PostComparator().reversed());
         Forum forumData = forum;
         session.setAttribute("ForumData", forumData);
         model.addAttribute("forum", forum);
@@ -118,4 +120,9 @@ public class HomeController {
     }
 }
 
-
+class PostComparator implements java.util.Comparator<Post> {
+    @Override
+    public int compare(Post a, Post b) {
+        return (a.getLikes() + b.getDislikes()) - (b.getLikes() + a.getDislikes());
+    }
+}

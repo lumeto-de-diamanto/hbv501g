@@ -41,8 +41,8 @@ public class Post {
         this.content = content;
         this.forum = forum;
         this.user = user;
-        this.likes = likes;
-        this.dislikes = dislikes;
+        this.likes = 0;
+        this.dislikes = 0;
     }
 
     public long getPost_id() {
@@ -111,20 +111,25 @@ public class Post {
                 '}';
     }
 
+    // Við verðum að finna betri system fyrir likes:
+    // 1. Það ætti ekki að vega hægt að sami user like-i eða dislike-i post tvisvar
+    // 2. Það ætti ekki að vera hægt að sami user like-i og dislike-i post á sama tíma
+    // 3. 'setLikes' og 'setDislikes' gæti farið mjög illa úrskeiðis; kannski skipta út fyrir 'userLikes', 'userUnLikes', o.s.fv.
+
     public int getLikes() {
         return likes;
     }
 
-    public int setLikes() {
-        return likes;
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 
     public int getDislikes() {
         return dislikes;
     }
 
-    public int setDislikes() {
-        return dislikes;
+    public void setDislikes(int dislikes) {
+        this.dislikes = dislikes;
     }
 
 }
