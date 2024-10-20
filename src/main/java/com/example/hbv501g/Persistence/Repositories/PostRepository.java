@@ -1,10 +1,11 @@
 package com.example.hbv501g.Persistence.Repositories;
 
-import com.example.hbv501g.Persistence.Entities.Forum;
-import com.example.hbv501g.Persistence.Entities.Post;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import com.example.hbv501g.Persistence.Entities.Forum;
+import com.example.hbv501g.Persistence.Entities.Post;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 

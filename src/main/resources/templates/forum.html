@@ -30,6 +30,12 @@
                 <td th:text="${post.user.getUsername()}">Author</td>
                 <td th:text="${post.getLikes()}">Likes</td>
                 <td th:text="${post.getDislikes()}">Dislikes</td>
+                <td>
+                    <form th:action="@{/post/{postId}(postId=${post.post_id})}" method="post">
+                        <button type="submit">Like Post</button>
+                    </form>
+                </td>
+
             </tr>
             </tbody>
         </table>

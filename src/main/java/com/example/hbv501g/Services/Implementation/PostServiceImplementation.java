@@ -1,13 +1,14 @@
 package com.example.hbv501g.Services.Implementation;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.example.hbv501g.Persistence.Entities.Forum;
 import com.example.hbv501g.Persistence.Entities.Post;
 import com.example.hbv501g.Persistence.Repositories.PostRepository;
 import com.example.hbv501g.Services.PostService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class PostServiceImplementation implements PostService {
@@ -47,6 +48,13 @@ public class PostServiceImplementation implements PostService {
     @Override
     public List<Post> getPostByForum(Forum forum) {
         return postRepository.findPostByForum(forum);
+    }
+
+    @Override
+    public void likepost(long postID){
+        Post post = postRepository.findById(postID);
+        post.setLikes(post.getLikes() + 1); // Increment likes
+        postRepository.save(post); // Save the updated post
     }
 
 }

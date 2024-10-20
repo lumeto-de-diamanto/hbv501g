@@ -1,9 +1,9 @@
 package com.example.hbv501g.Services;
 
+import java.util.List;
+
 import com.example.hbv501g.Persistence.Entities.Forum;
 import com.example.hbv501g.Persistence.Entities.Post;
-
-import java.util.List;
 
 public interface PostService {
     Post findByTitle(String title);
@@ -12,4 +12,5 @@ public interface PostService {
     Post save(Post post);
     void delete(Post post);
     List<Post> getPostByForum(Forum forum);
+    void likepost(long postID);
 }

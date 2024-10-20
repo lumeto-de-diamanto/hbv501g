@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -57,6 +58,12 @@ public class PostController {
             return "redirect:";
         }
     }
+    @PostMapping("/post/{postId}")
+    public String likePost(@PathVariable Long postId) {
+        postService.likepost(postId); // Increment likes in the service
+        return "redirect:/"; // Adjust redirect to appropriate URL
+    }
+    
 
     //This method deletes a post.
     @RequestMapping(value = "/posts/delete/{postId}", method = RequestMethod.GET)
