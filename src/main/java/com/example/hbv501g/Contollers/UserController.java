@@ -20,12 +20,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    //Signup (GET, POST)
+    //Gets the form to create new user
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String signupGET(User user) {
         return "signup";
     }
 
+    //Gets the data from the form and saves it to the database
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public String signupPOST(User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -39,12 +40,15 @@ public class UserController {
         }
         return "redirect:/";
     }
-    
+
+    //Gets the form to sign in
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginGET(User user) {
         return "login";
     }
 
+    //Gets the data from the form and checks if the user is in the database
+    //Puts the user to the session
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String loginPOST(User user, BindingResult result, Model model, HttpSession session) {
         if (result.hasErrors()) {
@@ -59,7 +63,7 @@ public class UserController {
         return "redirect:/";
     }
 
-    //loggedin (GET)
+    //Gives you what user is loggedin
     @RequestMapping(value = "/loggedin", method = RequestMethod.GET)
     public String loggedinGET(HttpSession session, Model model) {
         User sessionUser = (User) session.getAttribute("LoggedInUser");
@@ -73,7 +77,7 @@ public class UserController {
         }
     }
 
-    //loggedout GET
+    //Logs the user from the session out.
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logoutGET(HttpSession session) {
         User sessionUser = (User) session.getAttribute("LoggedInUser");

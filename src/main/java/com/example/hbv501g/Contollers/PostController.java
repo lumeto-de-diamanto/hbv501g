@@ -28,11 +28,13 @@ public class PostController {
         this.forumService = forumService;
     }
 
+    //This method gets the form to create a new post.
     @RequestMapping(value = "/addpost", method = RequestMethod.GET)
     public String addPostForm(Post post){
         return "newPost";
     }
 
+    //This method gets the data from the form and creates and saves it to a database if it is a loggedin user.
     @RequestMapping(value = "/addpost", method = RequestMethod.POST)
     public String addPost( Post post, BindingResult result, Model model, HttpSession session){
         if(result.hasErrors()){
@@ -43,10 +45,7 @@ public class PostController {
         System.out.println(loggedInUser.getUserId());
         Forum forumData = (Forum) session.getAttribute("ForumData");
 
-        
-        
         if (loggedInUser != null) {
-
             // setja user sem creator
             post.setUser(loggedInUser);
             post.setForum(forumData);
@@ -57,9 +56,9 @@ public class PostController {
         } else {
             return "redirect:";
         }
-        
     }
 
+    //This method deletes a post.
     @RequestMapping(value = "/posts/delete/{postId}", method = RequestMethod.GET)
     public String deletePost(@PathVariable("postId") long id, Model model){
         Post postToDelete = postService.findById(id);

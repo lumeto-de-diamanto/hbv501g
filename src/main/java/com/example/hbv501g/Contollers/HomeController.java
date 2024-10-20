@@ -33,6 +33,7 @@ public class HomeController {
         this.postService = postService;
     }
 
+    //This method gets all forums and displays them on the home page
     @RequestMapping("/")
     public String homePage(Model model) {
         //call a method in a Service Class
@@ -42,11 +43,13 @@ public class HomeController {
         return "home";
     }
 
+    //This method gets the form to create a new forum
     @RequestMapping(value = "/addforum", method = RequestMethod.GET)
     public String addForumForm(Forum forum) {
         return "newForum";
     }
 
+    //This method takes the data from the form and saves the forum into the database
     @RequestMapping(value = "/addforum", method = RequestMethod.POST)
     public String addForum(Forum forum, BindingResult result, Model model, HttpSession session) {
         if (result.hasErrors()) {
@@ -67,7 +70,8 @@ public class HomeController {
         }
     }
 
-
+    //This method deletes a forum if it is the same user that created it.
+    //It also deletes all the posts that were under that forum from the database.
     @RequestMapping(value = "/forum/delete/{forumId}", method = RequestMethod.GET)
     public String deleteForum(@PathVariable("forumId") long id, HttpSession session) {
         Forum forumToDelete = forumService.findById(id);
@@ -87,12 +91,15 @@ public class HomeController {
         return "redirect:/";
     }
 
+    //This method gets the form to edit the forum and the data from that forum.
     @RequestMapping(value = "/forum/editForum/{forumId}", method = RequestMethod.GET)
     public String editForumForm(@PathVariable("forumId") long id, Forum forum, Model model) {
         Forum forumToEdit = forumService.findById(id);
         model.addAttribute("forum", forumToEdit);
         return "editForum";
     }
+
+    //This method overrides the data for the selected forum.
     @RequestMapping(value = "/forum/editForum/{forumId}", method = RequestMethod.POST)
     public String editForum(@PathVariable("forumId") long id, Model model, @RequestParam(required = false) String name,
                                                               @RequestParam(required = false) String description, 
@@ -111,21 +118,23 @@ public class HomeController {
         return "redirect:/";
     }
 
-    //@RequestMapping(value = "/forum/{forumId}", method = RequestMethod.GET)
+    //This method gets you inside the forum and displays all of the posts inside it.
     @GetMapping("/forum/{forumId}")
     public String intoForum(@PathVariable("forumId") long forumId, Model model, HttpSession session) {
-        System.out.println("forumId = " + forumId);
         Forum forum = forumService.findById(forumId);
         List<Post> forumPosts = postService.getPostByForum(forum);
         Collections.sort(forumPosts, new PostComparator().reversed());
         Forum forumData = forum;
+
         session.setAttribute("ForumData", forumData);
         model.addAttribute("forum", forum);
         model.addAttribute("posts", forumPosts);
         model.addAttribute("newPosts", new Post());
+
         return "forum";
     }
 
+    //This method sorts the posts inside a forum by the most likes and dislikes.
     static class PostComparator implements java.util.Comparator<Post> {
         @Override
         public int compare(Post a, Post b) {
