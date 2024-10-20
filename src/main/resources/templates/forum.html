@@ -16,17 +16,20 @@
         <table>
             <thead>
             <tr>
-                <th>Post Title</th>
+                <th>Title</th>
                 <th>Content</th>
                 <th>Posted By</th>
-                <th>Date</th>
+                <th>Likes</th>
+                <th>Dislikes</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="post : ${posts}">
-                <td th:text="${post.title}">Post Title</td>
-                <td th:text="${post.content}">Post Content</td>
+                <td th:text="${post.title}">Title</td>
+                <td th:text="${post.getContent()}">Content</td>
                 <td th:text="${post.user.getUsername()}">Author</td>
+                <td th:text="${post.getLikes()}">Likes</td>
+                <td th:text="${post.getDislikes()}">Dislikes</td>
             </tr>
             </tbody>
         </table>
